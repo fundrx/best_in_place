@@ -22,6 +22,7 @@ class User < ActiveRecord::Base
   alias_attribute :description_simple, :description
 
   has_many :test_results
+  serialize :favorite_snacks
 
   def address_format
     "<b>addr => [#{address}]</b>".html_safe
