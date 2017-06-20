@@ -21,11 +21,13 @@ module BestInPlace
         collection = opts[:collection]
         collection = best_in_place_default_collection if collection.blank?
         collection = best_in_place_collection_builder(type, collection)
-        if value.is_a? Array
-            display_value = collection.map{|a| value.include?(a[0]) ? a[1] : nil }.compact.join(',')
-        else
-            value = value.to_s
-            display_value = collection.flat_map{|a| a[0].to_s == value ? a[1] : nil }.compact[0]
+        value = value.to_s unless value.is_a? Array
+        unless opts[:display_as].present?
+          if value.is_a? Array
+              display_value = collection.map{|a| value.include?(a[0]) ? a[1] : nil }.compact.join(',')
+          else
+              display_value = collection.flat_map{|a| a[0].to_s == value ? a[1] : nil }.compact[0]
+          end
         end
         collection = collection.to_json
         options[:data]['bip-collection'] = html_escape(collection)
